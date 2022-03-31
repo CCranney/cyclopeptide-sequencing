@@ -76,3 +76,12 @@ class CyclopeptideDataAnalysis:
             if isinstance(value, np.generic):
                 data[key] = value.item()
         return data
+
+    @staticmethod
+    def make_theoretical_spectrum(sequence):
+        ts = []
+        for i in range( len(sequence) ):
+            newPeptide = list(sequence[i:]) + list(sequence[0:i])
+            for j in range( 1,len(newPeptide) ):
+                ts.append(sum(newPeptide[0:j]))
+        return sorted(set([round(x,2) for x in ts]))

@@ -17,16 +17,8 @@ class CyclopeptideReference:
             self.precMz = data['precursorMz'][0]['precursorMz']
             self.sequence = cda.convert_smiles_to_amino_acid_mass_sequence(data['SMILES'])
             self.metadata = data
-        else:
+        else: #for json serialization
             self.__dict__.update(kwargs)
-
-    def __repr__(self):
-        return (
-            'CyclopeptideReference:'
-            f'\n\tName: {self.name}'
-            f'\n\tPrecursor Mass: {self.precMz}'
-            f'\n\tSequence: {self.sequence}'
-        )
 
     @classmethod
     def with_validation(cls, data):
@@ -35,8 +27,17 @@ class CyclopeptideReference:
         if sequence == 'sequence mass does not equal total mass': print(data['SMILES']); return None
         return cls(**data)
 
+    def __repr__(self):
+        return (
+            'CyclopeptideReference:'
+            f'\n\tName: {self.name}'
+            f'\n\tMass: {sum(self.sequence)}'
+            f'\n\tSequence: {self.sequence}'
+        )
 
     def to_json(self): return self.__dict__
 
     @staticmethod
     def from_json(reference_json): return CyclopeptideReference(**reference_json)
+
+    def draw_peaks(self): pass

@@ -40,7 +40,7 @@ def test_cyclopeptide_data_analysis_is_unbranched_cyclopeptide_from_smiles(surug
     assert not cda.is_unbranched_cyclopeptide_from_smiles(branched_cyclopeptide_ascidiacyclamide_smiles)
     assert cda.is_unbranched_cyclopeptide_from_smiles(surugamide_b_metadata['SMILES'])
 
-def test_cyclopeptide_reference_initialization(surugamide_b_metadata):
+def test_cyclopeptide_data_analysis_upload_spectrum_dictionary(surugamide_b_metadata):
     # account for .mgf
     with mzxml.read(surugamide_b_metadata['LocalFile'], use_index=True) as spectra: expected_dict = spectra.get_by_id(surugamide_b_metadata['Scan'])
     expected_dict.update(surugamide_b_metadata)
@@ -67,3 +67,13 @@ def test_cyclopeptide_reference_initialization(surugamide_b_metadata):
     del metadata_without_Charge['Charge']
     with pytest.raises(Exception, match = 'metadata dictionary requires the LocalFile, Scan and Charge keys'):
         cda.upload_spectrum_dictionary(metadata_without_Charge)
+
+def test_cyclopeptide_reference_make_theoretical_spectrum():
+    dummy_sequence = [1.5, 1.5, 3.5]
+    dummy_theoretical_spectrum = [1.5, 3.0, 3.5, 5.0]
+    observed_theoretical_spectrum = cda.make_theoretical_spectrum(dummy_sequence)
+    assert dummy_theoretical_spectrum == observed_theoretical_spectrum
+
+    dummy_sequence_approximate = [1.501, 1.502, 3.5]
+    observed_theoretical_spectrum_approximate = cda.make_theoretical_spectrum(dummy_sequence_approximate)
+    assert dummy_theoretical_spectrum == observed_theoretical_spectrum_approximate
