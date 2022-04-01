@@ -7,9 +7,11 @@ This project is my ongoing response to the challenge issued at the end of chapte
 
 I was unable to locate the data described at the end of the chapter for Tyrocidine B1. However, I found [a paper](https://pubmed.ncbi.nlm.nih.gov/31864964/) that identified a number of cyclopeptides from public data.<sup>2</sup> In table 5 of the supplement, they list these cyclopeptides as well as the GNPS ID that they were found in. Between that and [what I believe is the GNPS workflow they used](https://gnps.ucsd.edu/ProteoSAFe/index.jsp?params=%7B%22workflow%22:%22DEREPLICATOR%22%7D) ([VarQuest](http://cab.spbu.ru/software/varquest/)<sup>3</sup>), paper link [here](https://www.nature.com/articles/s41467-018-06082-8), I was able to obtain data for a significant portion of the cyclopeptides described.
 
-The output of my GNPS workflow is under `data/DEREPLICATOR-1ae5b82b-view_significant_unique-main.tsv`. Included in this package are algorithms for identifying cyclopeptides and determining the amino acid mass sequence purely from their SMILES format as provided in the workflow output.
+The output of my GNPS workflow is under `data/gnps_processing/DEREPLICATOR-1ae5b82b-view_significant_unique-main.tsv`. Included in this package are algorithms for identifying cyclopeptides and determining the amino acid mass sequence purely from their SMILES format as provided in the workflow output.
 
-I will be working on providing a single datafile that contains the spectra and other important features of each cyclopeptide for future reference.
+Mass spectrometry and metadata for several of these files is saved in JSON format in `data/cyclopeptide_references.json`. Data from this JSON file can be visually studied in the jupyter notebook `data/cyclopeptide_visuals.ipynb`. Note that not all cyclopeptides described in the Behsaz paper found their way into this analysis. In addition to just not finding all of them, I used a custom function for identifying cyclic peptides, and am debugging specific situations that I excluded from this data compilation (see Issues).
+
+Regardless, for anyone who wanted data for developing cyclopeptide sequencing algorithms like myself, I'm hoping this repository provides sufficient data and materials to get started.
 
 ### References
 
