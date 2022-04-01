@@ -13,6 +13,6 @@ def generate_cyclopeptide_reference_json_from_gnps_data(gnps_input_file, output_
             if cr: cyclopeptide_references.append(cr.to_json())
 
     with open(output_file, 'w') as f:
-        json.dump(cyclopeptide_references, f)
+        json.dump(cyclopeptide_references, f, indent=2)
 
 generate_cyclopeptide_reference_json_from_gnps_data('data/gnps_processing/dereplicator_filtered_cyclos_with_local_files.csv', 'data/cyclopeptide_references.json')
