@@ -61,15 +61,25 @@ class CyclopeptideReference:
             if cda.approx(theoretical_peaks[i], expected_masses[j], tolerance=tolerance): matched_peak_indices.append(j); i+=1
             elif theoretical_peaks[i] > expected_masses[j]: j+=1
             else: i+=1
-            if (i >= len(theoretical_peaks) or j >= len(expected_masses)) and len(matched_peak_indices) <= 3 and tolerance==0.01:
-                print('increased tolerance for visibility')
+            if (i >= len(theoretical_peaks) or j >= len(expected_masses)) and len(matched_peak_indices) < 10:
+
+                if tolerance < 0.1: newTolerance = tolerance + 0.01
+                else: newTolerance = tolerance + 0.1
+
+                print(f'Found {len(matched_peak_indices)} peaks at {tolerance} tolerance; increasing tolerance to {newTolerance}')
+                if newTolerance >=1.0: print('ABORT: tolerance too high'); break
+                tolerance = newTolerance
+
                 i, j = 0,0
                 matched_peak_indices = []
-                tolerance = 0.2
+            elif i >= len(theoretical_peaks) or j >= len(expected_masses):
+                print(f'Found {len(matched_peak_indices)} peaks at {tolerance} tolerance')
+            if len(expected_masses) <= 10: print (f'ABORT: only {len(expected_masses)} peaks in the spectrum!'); break
         noise_peak_indices = sorted(set([i for i in range(len(expected_masses))]) - set(matched_peak_indices))
         matches_df = pd.DataFrame(data=[[self.intensities[i] for i in matched_peak_indices]], columns=[self.mz[i] for i in matched_peak_indices])
         noise_df = pd.DataFrame(data=[[self.intensities[i] for i in noise_peak_indices]], columns=[self.mz[i] for i in noise_peak_indices])
 
+        ax.set_ylim(0,5000)
         CyclopeptideReference.plot_spec(ax, matches_df, 'red')
         CyclopeptideReference.plot_spec(ax, noise_df, 'grey')
 

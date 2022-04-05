@@ -67,6 +67,7 @@ class CyclopeptideDataAnalysis:
     @staticmethod
     def upload_spectrum_dictionary(metadata):
         if not all(key in metadata for key in ['LocalFile','Scan','Charge']): raise Exception('metadata dictionary requires the LocalFile, Scan and Charge keys')
+        print(metadata['LocalFile'])
         with mzxml.read(metadata['LocalFile'], use_index=True) as spectra: spectrum = spectra.get_by_id(str(metadata['Scan']))
         spectrum['m/z array'] = [float(x) for x in spectrum['m/z array']]
         spectrum['intensity array'] = [float(x) for x in spectrum['intensity array']]
